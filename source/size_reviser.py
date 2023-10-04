@@ -28,7 +28,7 @@ class SizeReviser(ezui.WindowController):
         > ( ) Asc–Desc Height          
         
         > : UPM Options:
-        > (X) Scale Proportionately  @upmOptionsRadios
+        > (X) Scale               @upmOptionsRadios
         > ( ) Match Asc–Desc Height  
         > ( ) Don’t Change
                 
