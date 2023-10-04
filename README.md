@@ -1,5 +1,6 @@
 # Size Reviser
-Size Reviser is a RoboFont extension for scaling your whole font up or down.
+
+#### Size Reviser is a RoboFont extension for scaling your whole font up or down.
 
 You can choose a precise measurement (either UPM or Ascender-to-Descender height), and set some settings, and it will do the rest.
 
