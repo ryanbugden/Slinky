@@ -5,17 +5,17 @@ You can choose a precise measurement (either UPM or Ascender-to-Descender height
 
 <img src="./_images/size_reviser-ui.png"  width="300">
 
-### Units
+## Units
 
 Enter your desired measurement here, in units.
 
 
-### Scale From
+## Scale From
 
 This is what your measurement will correspond to. You can scale based on UPM, or your ascender-to-descender height. If you scale your UPM, everything will be scaled proportionately. If you scale your Ascender-to-Descender height, you'll have the option on how/whether UPM is changed...
 
 
-### UPM Options
+## UPM Options
 
 These options are only available when Asc-Desc Height is enabled:
 
@@ -31,23 +31,23 @@ This will snap the UPM to match the Unit measurement provided, and ultimately ma
 
 This will leave UPM unaffected while everything else scales around it. This is useful, for instance, if you've got your UPM correct, but your glyphs/font dimensions are too small.
 
-### Scale
+## Scale
 
 These are things you can choose to scale along with everything else. Usually it's a good idea to leave all of these checked.
 
-### Round
+## Round
 
 When you scale drawings, there may be `float` numbers that no longer fit the grid you're working on. If you'd like to leave them `float` for now, choose Don’t Round. If you'd like your final drawings to be shimmied a bit to fit a 1-unit grid, choose 1 Unit.
 
-### Layer(s)
+## Layer(s)
 
 Choose which layers you'd like to scale, either just the foreground, or all layers.
 
-### Font(s)
+## Font(s)
 
 Choose which fonts you'd like to scale, either just the front-most `CurrentFont()`, or all open fonts.
 
-### Perform...
+## Perform...
 
 Choose whether you'd like to scale the font in-place, or whether you'd like Size Reviser to make a copy first and _then_ scale. 
 
