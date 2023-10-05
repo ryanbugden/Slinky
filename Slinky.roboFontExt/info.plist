@@ -13,15 +13,15 @@
 	<key>launchAtStartUp</key>
 	<true/>
 	<key>mainScript</key>
-	<string>size_revisor.py</string>
+	<string>slinky.py</string>
 	<key>name</key>
-	<string>Size Reviser</string>
+	<string>Slinky</string>
 	<key>requiresVersionMajor</key>
 	<string>4</string>
 	<key>requiresVersionMinor</key>
 	<string>0</string>
 	<key>timeStamp</key>
-	<real>1696459859.5392089</real>
+	<real>1696483168.368525</real>
 	<key>version</key>
 	<string>1.0</string>
 </dict>

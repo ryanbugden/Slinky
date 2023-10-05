@@ -1,10 +1,12 @@
-# Size Reviser
+# Slinky
 
-#### Size Reviser is a RoboFont extension for scaling your whole font up or down.
+<img src="./_images/mechanic_icon.png"  width="80">
+
+#### Slinky is a RoboFont extension for scaling your whole font up or down.
 
 You can choose a precise measurement (either UPM or Ascender-to-Descender height), and set some settings, and it will do the rest.
 
-<img src="./_images/size_reviser-ui.png"  width="300">
+<img src="./_images/ui.png"  width="300">
 
 ## Units
 
@@ -50,6 +52,6 @@ Choose which fonts you'd like to scale, either just the front-most `CurrentFont(
 
 ## Perform...
 
-Choose whether you'd like to scale the font in-place, or whether you'd like Size Reviser to make a copy first and _then_ scale. 
+Choose whether you'd like to scale the font in-place, or whether you'd like Slinky to make a copy first and _then_ scale. 
 
 > Note: If you scale the font in-place, just remember that it's hard to Undo. Be sure to save your work before clicking Scale.

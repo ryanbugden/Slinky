@@ -2,15 +2,15 @@
 # Extension Details
 # -----------------
 
-name                = "Size Reviser"
+name                = "Slinky"
 version             = "1.0"
 developer           = "Ryan Bugden"
 developer_url       = "https://ryanbugden.com"
 rf_version          = "4.0"
 pyc_only            = False
 menu_items          = []
-main_script         = "size_revisor.py"
-icon_file           = None # "_images/Eyeliner_mechanicIcon.png"
+main_script         = "slinky.py"
+icon_file           = "_images/mechanic_icon.png"
 launch_at_startup   = True
 install_after_build = True
 

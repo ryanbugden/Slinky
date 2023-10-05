@@ -1,4 +1,4 @@
-# menuTitle: Size Reviser
+# menuTitle: Slinky
 # author: Ryan Bugden
 
 from math import ceil
@@ -8,13 +8,10 @@ from mojo.extensions import getExtensionDefault, setExtensionDefault
 from mojo.UI import getDefault
 
 
-def my_round(value, base=1):
-    return base * round(value / base)
+EXTENSION_KEY = 'com.ryanbugden.slinky.settings'
 
 
-EXTENSION_KEY = 'com.ryanbugden.sizeReviser.settings'
-
-class SizeReviser(ezui.WindowController):
+class Slinky(ezui.WindowController):
 
     def build(self):
         content = """
@@ -97,7 +94,7 @@ class SizeReviser(ezui.WindowController):
             )
         )
         self.w = ezui.EZWindow(
-            title="Size Reviser",
+            title="Slinky",
             size="auto",
             content=content,
             descriptionData=descriptionData,
@@ -214,7 +211,7 @@ class SizeReviser(ezui.WindowController):
                 try:
                     setattr(f.info, attr, new_value)
                 except ValueError:
-                    print(f"Size Reviser Error: There was an issue setting the {attr} to value: {new_value}")
+                    print(f"Slinky Error: There was an issue setting the {attr} to value: {new_value}")
                     
             # Scale guidelines
             if scale_guidelines == True:
@@ -229,7 +226,7 @@ class SizeReviser(ezui.WindowController):
             # Scale things in every glyph in every chosen layer
             for layer in layers:
                 for g in layer:
-                    with g.undo('Scale glyph (using Size Reviser)'):
+                    with g.undo('Scale glyph (using Slinky)'):
                         for c in g.contours:
                             c.scaleBy(factor, (0,0))
                             if self.round_stuff != 1:
@@ -286,4 +283,4 @@ class SizeReviser(ezui.WindowController):
         self.w.close()
 
 
-SizeReviser()
+Slinky()
