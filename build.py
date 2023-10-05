@@ -96,7 +96,6 @@ if errors:
     print(errors)
 
 # Install the extension.
-
 if install_after_build:
     print("Installing extension...", end=" ")
     install_dir = os.path.expanduser(f"~/Library/Application Support/RoboFont/plugins")
