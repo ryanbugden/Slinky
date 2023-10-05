@@ -55,4 +55,4 @@ Choose which fonts you’d like to scale, either just the front-most `CurrentFon
 
 Choose whether you’d like to scale the font in-place, or whether you'd like Slinky to make a copy first and _then_ scale. 
 
-> Note: If you scale the font in-place, just remember that it’s difficult to Undo this action. Be sure your work is saved before clicking Scale. In case the wrong move is made here, you can then close and reopen the UFO. It might be a good idea to try out “As New Font” and checking the results before committing the same settings to the actual UFO in question.
+> Note: If you scale the font in-place, just remember that it’s difficult to Undo this action. Be sure your work is saved before clicking Scale. In case the wrong move is made here, you can then close and reopen the UFO. It might be a good idea to try out “As New Font” and check the results before committing the same settings to the actual UFO in question.
