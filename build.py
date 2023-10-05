@@ -8,10 +8,17 @@ developer           = "Ryan Bugden"
 developer_url       = "https://ryanbugden.com"
 rf_version          = "4.0"
 pyc_only            = False
-menu_items          = []
+menu_items          = [
+                        dict(
+                            path="slinky.py",
+                            preferredName="Slinky",
+                            shortKey=""
+
+                        ),
+                    ]
 main_script         = "slinky.py"
 icon_file           = "images/mechanic_icon.png"
-launch_at_startup   = True
+launch_at_startup   = False
 install_after_build = True
 
 # ----------------------

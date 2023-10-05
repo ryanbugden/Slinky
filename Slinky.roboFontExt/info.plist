@@ -3,7 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>addToMenu</key>
-	<array/>
+	<array>
+		<dict>
+			<key>path</key>
+			<string>slinky.py</string>
+			<key>preferredName</key>
+			<string>Slinky</string>
+			<key>shortKey</key>
+			<string></string>
+		</dict>
+	</array>
 	<key>developer</key>
 	<string>Ryan Bugden</string>
 	<key>developerURL</key>
@@ -11,7 +20,7 @@
 	<key>html</key>
 	<false/>
 	<key>launchAtStartUp</key>
-	<true/>
+	<false/>
 	<key>mainScript</key>
 	<string>slinky.py</string>
 	<key>name</key>
@@ -21,7 +30,7 @@
 	<key>requiresVersionMinor</key>
 	<string>0</string>
 	<key>timeStamp</key>
-	<real>1696483302.930038</real>
+	<real>1696514999.670553</real>
 	<key>version</key>
 	<string>1.0</string>
 </dict>
