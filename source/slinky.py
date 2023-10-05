@@ -213,7 +213,7 @@ class Slinky(ezui.WindowController):
                 except ValueError:
                     print(f"Slinky Error: There was an issue setting the {attr} to value: {new_value}")
                     
-            # Scale guidelines
+            # Scale font guidelines
             if scale_guidelines == True:
                 for guideline in f.guidelines:
                     guideline.scaleBy(factor, (0,0))
@@ -227,18 +227,22 @@ class Slinky(ezui.WindowController):
             for layer in layers:
                 for g in layer:
                     with g.undo('Scale glyph (using Slinky)'):
+
+                        # Scale glyph drawings
                         for c in g.contours:
                             c.scaleBy(factor, (0,0))
                             if self.round_stuff != 1:
                                 for pt in c.points:
                                     pt.x, pt.y = self.round_list([pt.x, pt.y])
-                                
+                            
+                        # Scale anchors
                         if scale_anchors == True:
                             for a in g.anchors:
                                 a.scaleBy(factor, (0,0))
                                 if self.round_stuff != 1:
                                     a.x, a.y = self.round_list([a.x, a.y])
                     
+                        # Scale component offset
                         if trans_components == True:
                             for comp in g.components:
                                 x, y = comp.offset
@@ -248,12 +252,14 @@ class Slinky(ezui.WindowController):
                                     x, y = self.round_list([x, y])
                                 comp.offset = x, y
                             
+                        # Scale glyph guidelines
                         if scale_guidelines == True:
                             for guideline in g.guidelines:
                                 guideline.scaleBy(factor, (0,0))
                                 if self.round_stuff != 1:
                                     guideline.x, guideline.y = self.round_list([guideline.x, guideline.y])
-                                                                
+                                                
+                        # Scale images                
                         if scale_images == True:
                             g.image.scaleBy(factor, (0,0))
                             if self.round_stuff != 1:
@@ -264,12 +270,15 @@ class Slinky(ezui.WindowController):
                         
             # Finish up
             f.changed()
-            
-            print(f"\n|/|/|/|/|/|/||/|/|/|/|/|/|/|/|/||/|/|/|")
-            print(f"Slinky Report - {f.info.familyName} {f.info.styleName}:")
+
             # Open the new font
             if perform_choice == 1:
                 f.openInterface()
+            
+            # Print a report
+            print(f"\n|/|/|/|/|/|/||/|/|/|/|/|/|/|/|/||/|/|/|")
+            print(f"Slinky Report - {f.info.familyName} {f.info.styleName}:")
+            if perform_choice == 1:
                 print(f"\tMade and opened a copy")
             print(f"\tScaled by a factor of {factor}")
             if f.info.ascender - f.info.descender != old_asc_desc:
