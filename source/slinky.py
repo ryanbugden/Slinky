@@ -36,7 +36,7 @@ class Slinky(ezui.WindowController):
         > [X] Guidelines          @scaleGuidelinesCheckbox
         > [X] Images              @scaleImagesCheckbox
         > [X] Kerning             @scaleKerningCheckbox
-        > [X] Component Offset    @translateComponentsCheckbox
+        > [X] Component Offset    @scaleCompOffsetCheckbox
        
         > : Round:
         > (X) 1 Unit              @roundRadios
@@ -166,7 +166,7 @@ class Slinky(ezui.WindowController):
         scale_anchors       = self.w.getItem('scaleAnchorsCheckbox').get()
         scale_images        = self.w.getItem('scaleImagesCheckbox').get()
         scale_kerning       = self.w.getItem('scaleKerningCheckbox').get()
-        trans_components    = self.w.getItem('translateComponentsCheckbox').get()
+        scale_comp_offset   = self.w.getItem('scaleCompOffsetCheckbox').get()
         
         all_fonts_choice    = self.w.getItem('fontsRadios').get()
         all_layers_choice   = self.w.getItem('layersRadios').get()
@@ -249,7 +249,7 @@ class Slinky(ezui.WindowController):
                                     a.x, a.y = self.round_list([a.x, a.y])
                     
                         # Scale component offset
-                        if trans_components == True:
+                        if scale_comp_offset == True:
                             for comp in g.components:
                                 x, y = comp.offset
                                 x *= factor
@@ -282,7 +282,7 @@ class Slinky(ezui.WindowController):
                 f.openInterface()
             
             # Print a report
-            print(f"\n|/|/|/|/|/|/||/|/|/|/|/|/|/|/|/||/|/|/|")
+            print(f"\n|/|/|/|/|/|/|/|/|/|/|/|/|/|/|/|/|/|/|/|/|")
             print(f"Slinky Report - {f.info.familyName} {f.info.styleName}:")
             if perform_choice == 1:
                 print(f"\tMade and opened a copy")
