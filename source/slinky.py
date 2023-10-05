@@ -200,7 +200,7 @@ class Slinky(ezui.WindowController):
                     f.info.unitsPerEm = otRound(desired_height)
                 
             # Scale each value in these blue-value lists
-            for attr in ["descender", "xHeight", "capHeight", "ascender", "openTypeHeadLowestRecPPEM", "openTypeHheaAscender", "openTypeHheaDescender", "openTypeHheaLineGap", "openTypeHheaCaretSlopeRise", "openTypeHheaCaretSlopeRun", "openTypeHheaCaretOffset", "openTypeOS2WidthClass", "openTypeOS2WeightClass", "openTypeOS2TypoAscender", "openTypeOS2TypoDescender", "openTypeOS2TypoLineGap", "openTypeOS2WinAscent", "openTypeOS2WinDescent", "openTypeOS2SubscriptXSize", "openTypeOS2SubscriptYSize", "openTypeOS2SubscriptXOffset", "openTypeOS2SubscriptYOffset", "openTypeOS2SuperscriptXSize", "openTypeOS2SuperscriptYSize", "openTypeOS2SuperscriptXOffset", "openTypeOS2SuperscriptYOffset", "openTypeOS2StrikeoutSize", "openTypeOS2StrikeoutPosition", "openTypeVheaVertTypoAscender", "openTypeVheaVertTypoDescender", "openTypeVheaVertTypoLineGap", "openTypeVheaCaretSlopeRise", "openTypeVheaCaretSlopeRun", "openTypeVheaCaretOffset", "postscriptSlantAngle", "postscriptUnderlineThickness", "postscriptUnderlinePosition", "postscriptBlueValues", "postscriptOtherBlues", "postscriptFamilyBlues", "postscriptFamilyOtherBlues", "postscriptStemSnapH", "postscriptStemSnapV", "postscriptBlueFuzz", "postscriptBlueShift", "postscriptDefaultWidthX", "postscriptNominalWidthX"]:
+            for attr in ["descender", "xHeight", "capHeight", "ascender", "openTypeHeadLowestRecPPEM", "openTypeHheaAscender", "openTypeHheaDescender", "openTypeHheaLineGap", "openTypeHheaCaretSlopeRise", "openTypeHheaCaretSlopeRun", "openTypeHheaCaretOffset", "openTypeOS2WeightClass", "openTypeOS2TypoAscender", "openTypeOS2TypoDescender", "openTypeOS2TypoLineGap", "openTypeOS2WinAscent", "openTypeOS2WinDescent", "openTypeOS2SubscriptXSize", "openTypeOS2SubscriptYSize", "openTypeOS2SubscriptXOffset", "openTypeOS2SubscriptYOffset", "openTypeOS2SuperscriptXSize", "openTypeOS2SuperscriptYSize", "openTypeOS2SuperscriptXOffset", "openTypeOS2SuperscriptYOffset", "openTypeOS2StrikeoutSize", "openTypeOS2StrikeoutPosition", "openTypeVheaVertTypoAscender", "openTypeVheaVertTypoDescender", "openTypeVheaVertTypoLineGap", "openTypeVheaCaretSlopeRise", "openTypeVheaCaretSlopeRun", "openTypeVheaCaretOffset", "postscriptSlantAngle", "postscriptUnderlineThickness", "postscriptUnderlinePosition", "postscriptBlueValues", "postscriptOtherBlues", "postscriptFamilyBlues", "postscriptFamilyOtherBlues", "postscriptStemSnapH", "postscriptStemSnapV", "postscriptBlueFuzz", "postscriptBlueShift", "postscriptDefaultWidthX", "postscriptNominalWidthX"]:
                 value = getattr(f.info, attr)
                 if value == None or value == []:
                     continue
@@ -265,22 +265,25 @@ class Slinky(ezui.WindowController):
             # Finish up
             f.changed()
             
+            print(f"\n|/|/|/|/|/|/||/|/|/|/|/|/|/|/|/||/|/|/|")
+            print(f"Slinky Report - {f.info.familyName} {f.info.styleName}:")
             # Open the new font
             if perform_choice == 1:
                 f.openInterface()
-    
-            print(f"Scaled {f.info.familyName} {f.info.styleName} (Factor: {factor}:")
-            print(f"\tOld ascender-to-descender height: {old_asc_desc}")
-            print(f"\tNew ascender-to-descender height: {f.info.ascender - f.info.descender}")
+                print(f"\tMade and opened a copy")
+            print(f"\tScaled by a factor of {factor}")
+            if f.info.ascender - f.info.descender != old_asc_desc:
+                print(f"\tChanged ascender-to-descender height: {old_asc_desc} → {f.info.ascender - f.info.descender}")
+            else:
+                print(f"\tDid not change ascender-to-descender height")
             if f.info.unitsPerEm != old_upm:
-                print(f"\tOld UPM: {old_upm}")
-                print(f"\tNew UPM: {f.info.unitsPerEm}")
-            print()
+                print(f"\tChanged UPM: {old_upm} → {f.info.unitsPerEm}")
+            else:
+                print(f"\tDid not change UPM")
             
         self.progressSpinner.stop()
         self.progressSpinnerAnimating = False
         self.progressSpinner.show(False)
-        self.w.close()
 
 
 Slinky()
