@@ -1,12 +1,12 @@
 # Slinky
 
-<img src="./_images/mechanic_icon.png"  width="80">
+<img src="./images/mechanic_icon.png"  width="80">
 
 #### Slinky is a RoboFont extension for scaling your whole font up or down.
 
 You can choose a precise measurement (either UPM or Ascender-to-Descender height), and set some settings, and it will do the rest.
 
-<img src="./_images/ui.png"  width="300">
+<img src="./images/ui.png"  width="300">
 
 ## Units
 

@@ -10,7 +10,7 @@ rf_version          = "4.0"
 pyc_only            = False
 menu_items          = []
 main_script         = "slinky.py"
-icon_file           = "_images/mechanic_icon.png"
+icon_file           = "images/mechanic_icon.png"
 launch_at_startup   = True
 install_after_build = True
 
