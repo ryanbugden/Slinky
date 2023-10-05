@@ -106,18 +106,24 @@ class Slinky(ezui.WindowController):
         prefs = getExtensionDefault(EXTENSION_KEY, fallback=self.w.getItemValues())
         try: self.w.setItemValues(prefs)
         except KeyError: pass
-        
+
         self.upm_options = self.w.getItem("upmOptionsRadios")
         self.upm_setting_stored = self.upm_options.get()
         self.originRadiosCallback(self.w.getItem("originRadios"))
         self.performOptionsRadiosCallback(self.w.getItem("performOptionsRadios"))
         
     def started(self):
+        # Position the window where it was last
+        _, _, ww, wh =  self.w.getPosSize()
+        pos_size = getExtensionDefault(EXTENSION_KEY + ".windowPosSize", fallback=(200, 200, ww, wh))
+        self.w.setPosSize(pos_size)
+
         self.w.open()
         self.progressSpinner.show(False)
-        
+
     def destroy(self):
         setExtensionDefault(EXTENSION_KEY, self.w.getItemValues())
+        setExtensionDefault(EXTENSION_KEY + ".windowPosSize", self.w.getPosSize())
         # self.w.close()
         
     def round_list(self, l):
