@@ -6,7 +6,7 @@ name                = "Slinky"
 version             = "1.1"
 developer           = "Ryan Bugden"
 developer_url       = "https://ryanbugden.com"
-rf_version          = "4.0"
+rf_version          = "4.4b"
 pyc_only            = False
 menu_items          = [
                         dict(
