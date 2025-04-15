@@ -1,0 +1,21 @@
+name: Validate and Build the Extension
+on:
+  push
+
+jobs:
+  validate_and_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Copy index.md to README.md
+        run: cp source/html/index.md README.md
+
+      - name: Update README.md paths
+        run: sed -i 's|\.\./resources/|source/resources/|g' README.md
+
+      - name: Validate and Build
+        uses: typemytype/roboFont-Extension-action@v0.1.0
+        with:
+          autotagging: true

@@ -1,0 +1,10 @@
+name: Slinky
+developer: Ryan Bugden
+developerURL: http://ryanbugden.com
+launchAtStartUp: false
+mainScript: main.py
+version: 1.1
+html: true
+timeStamp: 1744682771
+requiresVersionMajor: '4'
+requiresVersionMinor: '4b'
