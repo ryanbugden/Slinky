@@ -17,30 +17,31 @@ class Slinky(ezui.WindowController):
         content = """
         * TwoColumnForm           @form
         
-        > : Units:     
-        > [_1000 _]               @unitsTextField
+        > : Scale Using:
+        > (X) UPM                 @basisRadios
+        > ( ) Asc–Desc Height  
+        > ( ) Cap-Height                  
+        > ( ) Percentage          
         
-        > : Scale From:
-        > (X) UPM                 @originRadios
-        > ( ) Asc–Desc Height          
+        > : Value:   
+        > * HorizontalStack  
+        >> [_1000 _]              @valueTextField
+        >> units                  @valueLabel
         
-        > : UPM Options:
-        > (X) Scale               @upmOptionsRadios
-        > ( ) Match Asc–Desc Height  
-        > ( ) Don’t Change
-                
         > ---
         
         > : Scale:
+        > [ ] UPM                 @scaleUPMCheckbox
         > [X] Anchors             @scaleAnchorsCheckbox
         > [X] Guidelines          @scaleGuidelinesCheckbox
         > [X] Images              @scaleImagesCheckbox
         > [X] Kerning             @scaleKerningCheckbox
         > [X] Component Offset    @scaleCompOffsetCheckbox
+        > [X] Italic Slant Offset @scaleSlantOffsetCheckbox
        
         > : Round:
-        > (X) 1 Unit              @roundRadios
-        > ( ) Don’t Round          
+        > ( ) Don’t Round         @roundRadios
+        > (X) 1 Unit 
         
         > ---
         
@@ -74,11 +75,13 @@ class Slinky(ezui.WindowController):
                 titleColumnWidth=title_width,
                 itemColumnWidth=item_width
             ),
-            unitsTextField=dict(
+            valueTextField=dict(
                 placeholder=1000,
-                valueType="integer",
+                valueType="float",
                 valueWidth=50,
+                width=50,
                 valueIncrement=1,
+                minValue=0.01
             ),
             upmTextField=dict(
                 placeholder=1000,
@@ -104,12 +107,11 @@ class Slinky(ezui.WindowController):
         self.progressSpinner = self.w.getItem("progressSpinner")
         
         prefs = getExtensionDefault(EXTENSION_KEY, fallback=self.w.getItemValues())
-        try: self.w.setItemValues(prefs)
-        except KeyError: pass
-
-        self.upm_options = self.w.getItem("upmOptionsRadios")
-        self.upm_setting_stored = self.upm_options.get()
-        self.originRadiosCallback(self.w.getItem("originRadios"))
+        try: 
+            self.w.setItemValues(prefs)
+        except KeyError: 
+            pass
+        self.basisRadiosCallback(self.w.getItem("basisRadios"))
         self.performOptionsRadiosCallback(self.w.getItem("performOptionsRadios"))
         
     def started(self):
@@ -118,55 +120,83 @@ class Slinky(ezui.WindowController):
 
     def destroy(self):
         setExtensionDefault(EXTENSION_KEY, self.w.getItemValues())
-        # self.w.close()
         
     def round_list(self, l):
-        new_list = []
-        for item in l:
-            if self.round_stuff == 0:
-                item = otRound(item)
-            new_list.append(item)
-        return new_list
+        '''
+        Individually rounds every item in a list.
+        '''
+        return [otRound(item) for item in l]
         
-    def originRadiosCallback(self, sender):
-        value = sender.get()
-        if value == 0:
-            self.upm_setting_stored = self.upm_options.get()
-            self.upm_options.set(0)
-            self.upm_options.enable(False)
-        elif value == 1:
-            self.upm_options.set(self.upm_setting_stored)
-            self.upm_options.enable(True)
+    def basisRadiosCallback(self, sender):
+        '''
+        Keeps an eye on the Scale Using options and 
+        updates elements of the UI appropriately.
+        '''
+        basis = sender.get()
+        value_label = self.w.getItem("valueLabel")
+        # Percentage
+        if basis == 3:
+            value_label.set("%")
+        else:
+            value_label.set("units")
+        # UPM
+        if basis == 0:
+            self.w.getItem("scaleUPMCheckbox").enable(False)
+        else:
+            self.w.getItem("scaleUPMCheckbox").enable(True)
             
     def performOptionsRadiosCallback(self, sender):
+        '''
+        Keeps an eye on the Perform options and warns 
+        the user, if about to scale the fonts directly, 
+        to save the fonts beforehand.
+        '''
         value = sender.get()
         if value == 0:
             self.w.getItem("saveLabel").show(True)
         elif value == 1:
             self.w.getItem("saveLabel").show(False)
-        
-    progressSpinnerAnimating = False
-    def scaleButtonCallback(self, sender):
+            
+    def start_spinner(self):
+        # Move save label away
+        self.w.getItem("saveLabel").show(False)
         self.progressSpinner.show(True)
         self.progressSpinnerAnimating = True
         self.progressSpinner.start()
         
-        origin_choice       = self.w.getItem("originRadios").get()
-        self.round_stuff    = self.w.getItem('roundRadios').get()
-        desired_height      = self.w.getItem('unitsTextField').get()
-        upm_treatment       = self.upm_options.get()
+    def stop_spinner(self):
+        self.progressSpinner.stop()
+        self.progressSpinnerAnimating = False
+        self.progressSpinner.show(False)
+        # Bring back save label if needed
+        self.performOptionsRadiosCallback(self.w.getItem("performOptionsRadios"))
         
+    progressSpinnerAnimating = False
+    def scaleButtonCallback(self, sender):
+        '''Scales the font(s).'''
+        self.start_spinner()
+        
+        basis_choice        = self.w.getItem("basisRadios").get()
+        round_stuff         = self.w.getItem('roundRadios').get()
+        desired_value       = self.w.getItem('valueTextField').get()
+        
+        scale_UPM           = self.w.getItem('scaleUPMCheckbox').get()
         scale_guidelines    = self.w.getItem('scaleGuidelinesCheckbox').get()
         scale_anchors       = self.w.getItem('scaleAnchorsCheckbox').get()
         scale_images        = self.w.getItem('scaleImagesCheckbox').get()
         scale_kerning       = self.w.getItem('scaleKerningCheckbox').get()
         scale_comp_offset   = self.w.getItem('scaleCompOffsetCheckbox').get()
+        scale_ital_offset   = self.w.getItem('scaleSlantOffsetCheckbox').get()
         
         all_fonts_choice    = self.w.getItem('fontsRadios').get()
         all_layers_choice   = self.w.getItem('layersRadios').get()
         perform_choice      = self.w.getItem('performOptionsRadios').get()
 
         fonts = AllFonts()
+        if not fonts:
+            print(f"Slinky: Open a font first.")
+            self.stop_spinner()
+            return
         if all_fonts_choice == 0:
             fonts = [fonts[0]]
             
@@ -176,28 +206,18 @@ class Slinky(ezui.WindowController):
             f = font
             if perform_choice == 1:
                 f = font.copy()
-
-            # Which layers will be scaled            
-            layers = f.layers
-            if all_layers_choice == 0:
-                layers = [f.defaultLayer]
             
-            # Scale UPM and figure out the basis for the scale factor overall
-            old_upm = f.info.unitsPerEm
-            old_asc_desc = f.info.ascender - f.info.descender
-            # Scale from UPM
-            if origin_choice == 0:
-                height = old_upm
-                factor = desired_height / height
-                f.info.unitsPerEm = otRound(desired_height)
-            # Scale from asc-desc
-            else:
-                height = old_asc_desc
-                factor = desired_height / height
-                if upm_treatment == 0:
-                    f.info.unitsPerEm = otRound(old_upm * factor)
-                elif upm_treatment == 1:
-                    f.info.unitsPerEm = otRound(desired_height)
+            # Grab old value and figure out scale factor overall
+            basis_options = [f.info.unitsPerEm, f.info.ascender - f.info.descender, f.info.capHeight, 100]
+            current_value = basis_options[basis_choice]
+            if current_value == 0:
+                print(f"Slinky Error: Avoiding dividing by zero. Change the settings and try again.")
+                return
+            factor = desired_value / current_value
+            
+            # Scale UPM
+            if scale_UPM == True or basis_choice == 0:
+                f.info.unitsPerEm = otRound(basis_options[0] * factor)
                 
             # Scale each value in these blue-value lists
             for attr in ["descender", "xHeight", "capHeight", "ascender", "openTypeHeadLowestRecPPEM", "openTypeHheaAscender", "openTypeHheaDescender", "openTypeHheaLineGap", "openTypeHheaCaretSlopeRise", "openTypeHheaCaretSlopeRun", "openTypeHheaCaretOffset", "openTypeOS2WeightClass", "openTypeOS2TypoAscender", "openTypeOS2TypoDescender", "openTypeOS2TypoLineGap", "openTypeOS2WinAscent", "openTypeOS2WinDescent", "openTypeOS2SubscriptXSize", "openTypeOS2SubscriptYSize", "openTypeOS2SubscriptXOffset", "openTypeOS2SubscriptYOffset", "openTypeOS2SuperscriptXSize", "openTypeOS2SuperscriptYSize", "openTypeOS2SuperscriptXOffset", "openTypeOS2SuperscriptYOffset", "openTypeOS2StrikeoutSize", "openTypeOS2StrikeoutPosition", "openTypeVheaVertTypoAscender", "openTypeVheaVertTypoDescender", "openTypeVheaVertTypoLineGap", "openTypeVheaCaretSlopeRise", "openTypeVheaCaretSlopeRun", "openTypeVheaCaretOffset", "postscriptSlantAngle", "postscriptUnderlineThickness", "postscriptUnderlinePosition", "postscriptBlueValues", "postscriptOtherBlues", "postscriptFamilyBlues", "postscriptFamilyOtherBlues", "postscriptStemSnapH", "postscriptStemSnapV", "postscriptBlueFuzz", "postscriptBlueShift", "postscriptDefaultWidthX", "postscriptNominalWidthX"]:
@@ -217,30 +237,37 @@ class Slinky(ezui.WindowController):
             if scale_guidelines == True:
                 for guideline in f.guidelines:
                     guideline.scaleBy(factor, (0,0))
-                    guideline.x, guideline.y = self.round_list([guideline.x, guideline.y])
+                    if round_stuff:
+                        guideline.round()
              
             # Scale kerning
             if scale_kerning == True:
                 f.kerning.scaleBy(factor)
-            
+
+            # Scale italic slant offset
+            if scale_ital_offset == True:
+                offset_key = 'com.typemytype.robofont.italicSlantOffset'
+                if offset_key in f.lib.keys():
+                    f.lib[offset_key] = otRound(f.lib[offset_key] * factor)
+
             # Scale things in every glyph in every chosen layer
+            layers = [f.defaultLayer] if all_layers_choice == 0 else f.layers
             for layer in layers:
                 for g in layer:
-                    with g.undo('Scale glyph (using Slinky)'):
+                    with g.undo('Scale Glyph (using Slinky)'):
 
                         # Scale glyph drawings
                         for c in g.contours:
                             c.scaleBy(factor, (0,0))
-                            if self.round_stuff != 1:
-                                for pt in c.points:
-                                    pt.x, pt.y = self.round_list([pt.x, pt.y])
+                            if round_stuff:
+                                c.round()
                             
                         # Scale anchors
                         if scale_anchors == True:
                             for a in g.anchors:
                                 a.scaleBy(factor, (0,0))
-                                if self.round_stuff != 1:
-                                    a.x, a.y = self.round_list([a.x, a.y])
+                                if round_stuff:
+                                    a.round()
                     
                         # Scale component offset
                         if scale_comp_offset == True:
@@ -248,7 +275,7 @@ class Slinky(ezui.WindowController):
                                 x, y = comp.offset
                                 x *= factor
                                 y *= factor
-                                if self.round_stuff != 1:
+                                if round_stuff:
                                     x, y = self.round_list([x, y])
                                 comp.offset = x, y
                             
@@ -256,15 +283,14 @@ class Slinky(ezui.WindowController):
                         if scale_guidelines == True:
                             for guideline in g.guidelines:
                                 guideline.scaleBy(factor, (0,0))
-                                if self.round_stuff != 1:
-                                    guideline.x, guideline.y = self.round_list([guideline.x, guideline.y])
+                                if round_stuff:
+                                    guideline.round()
                                                 
                         # Scale images                
                         if scale_images == True:
                             g.image.scaleBy(factor, (0,0))
-                            if self.round_stuff != 1:
-                                x, y = g.image.offset
-                                g.image.offset = self.round_list([x, y])
+                            if round_stuff:
+                                g.image.round()
                         
                         g.width *= factor
                         
@@ -281,18 +307,20 @@ class Slinky(ezui.WindowController):
             if perform_choice == 1:
                 print(f"\tMade and opened a copy")
             print(f"\tScaled by a factor of {factor}")
-            if f.info.ascender - f.info.descender != old_asc_desc:
-                print(f"\tChanged ascender-to-descender height: {old_asc_desc} → {f.info.ascender - f.info.descender}")
-            else:
-                print(f"\tDid not change ascender-to-descender height")
-            if f.info.unitsPerEm != old_upm:
-                print(f"\tChanged UPM: {old_upm} → {f.info.unitsPerEm}")
+            if f.info.unitsPerEm != basis_options[0]:
+                print(f"\tChanged UPM: {basis_options[0]} → {f.info.unitsPerEm}")
             else:
                 print(f"\tDid not change UPM")
+            if f.info.ascender - f.info.descender != basis_options[1]:
+                print(f"\tChanged ascender-to-descender height: {basis_options[1]} → {f.info.ascender - f.info.descender}")
+            else:
+                print(f"\tDid not change ascender-to-descender height")
+            if f.info.capHeight != basis_options[2]:
+                print(f"\tChanged cap-height: {basis_options[2]} → {f.info.capHeight}")
+            else:
+                print(f"\tDid not change cap-height")
             
-        self.progressSpinner.stop()
-        self.progressSpinnerAnimating = False
-        self.progressSpinner.show(False)
+        self.stop_spinner()
 
 
 Slinky()
