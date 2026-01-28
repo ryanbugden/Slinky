@@ -121,12 +121,6 @@ class Slinky(ezui.WindowController):
     def destroy(self):
         setExtensionDefault(EXTENSION_KEY, self.w.getItemValues())
         
-    def round_list(self, l):
-        '''
-        Individually rounds every item in a list.
-        '''
-        return [otRound(item) for item in l]
-        
     def basisRadiosCallback(self, sender):
         '''
         Keeps an eye on the Scale Using options and 
@@ -259,15 +253,11 @@ class Slinky(ezui.WindowController):
                         # Scale glyph drawings
                         for c in g.contours:
                             c.scaleBy(factor, (0,0))
-                            if round_stuff:
-                                c.round()
                             
                         # Scale anchors
                         if scale_anchors == True:
                             for a in g.anchors:
                                 a.scaleBy(factor, (0,0))
-                                if round_stuff:
-                                    a.round()
                     
                         # Scale component offset
                         if scale_comp_offset == True:
@@ -275,16 +265,12 @@ class Slinky(ezui.WindowController):
                                 x, y = comp.offset
                                 x *= factor
                                 y *= factor
-                                if round_stuff:
-                                    x, y = self.round_list([x, y])
                                 comp.offset = x, y
                             
                         # Scale glyph guidelines
                         if scale_guidelines == True:
                             for guideline in g.guidelines:
                                 guideline.scaleBy(factor, (0,0))
-                                if round_stuff:
-                                    guideline.round()
                                                 
                         # Scale images                
                         if scale_images == True:
@@ -293,6 +279,9 @@ class Slinky(ezui.WindowController):
                                 g.image.round()
                         
                         g.width *= factor
+
+                        if round_stuff:
+                            g.round()
                         
             # Finish up
             f.changed()
