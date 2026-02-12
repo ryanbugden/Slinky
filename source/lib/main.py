@@ -212,9 +212,57 @@ class Slinky(ezui.WindowController):
             # Scale UPM
             if scale_UPM == True or basis_choice == 0:
                 f.info.unitsPerEm = otRound(basis_options[0] * factor)
-                
+
             # Scale each value in this list of font info attributes
-            for attr in ["descender", "xHeight", "capHeight", "ascender", "openTypeHeadLowestRecPPEM", "openTypeHheaAscender", "openTypeHheaDescender", "openTypeHheaLineGap", "openTypeHheaCaretSlopeRise", "openTypeHheaCaretSlopeRun", "openTypeHheaCaretOffset", "openTypeOS2TypoAscender", "openTypeOS2TypoDescender", "openTypeOS2TypoLineGap", "openTypeOS2WinAscent", "openTypeOS2WinDescent", "openTypeOS2SubscriptXSize", "openTypeOS2SubscriptYSize", "openTypeOS2SubscriptXOffset", "openTypeOS2SubscriptYOffset", "openTypeOS2SuperscriptXSize", "openTypeOS2SuperscriptYSize", "openTypeOS2SuperscriptXOffset", "openTypeOS2SuperscriptYOffset", "openTypeOS2StrikeoutSize", "openTypeOS2StrikeoutPosition", "openTypeVheaVertTypoAscender", "openTypeVheaVertTypoDescender", "openTypeVheaVertTypoLineGap", "openTypeVheaCaretSlopeRise", "openTypeVheaCaretSlopeRun", "openTypeVheaCaretOffset", "postscriptSlantAngle", "postscriptUnderlineThickness", "postscriptUnderlinePosition", "postscriptBlueValues", "postscriptOtherBlues", "postscriptFamilyBlues", "postscriptFamilyOtherBlues", "postscriptStemSnapH", "postscriptStemSnapV", "postscriptBlueFuzz", "postscriptBlueShift", "postscriptDefaultWidthX", "postscriptNominalWidthX"]:
+            values_to_scale = [
+                "descender", 
+                "xHeight", 
+                "capHeight",
+                "ascender",
+                "openTypeHeadLowestRecPPEM",
+                "openTypeHheaAscender",
+                "openTypeHheaDescender",
+                "openTypeHheaLineGap",
+                "openTypeHheaCaretSlopeRise",
+                "openTypeHheaCaretSlopeRun",
+                "openTypeHheaCaretOffset",
+                "openTypeOS2TypoAscender",
+                "openTypeOS2TypoDescender",
+                "openTypeOS2TypoLineGap",
+                "openTypeOS2WinAscent",
+                "openTypeOS2WinDescent",
+                "openTypeOS2SubscriptXSize",
+                "openTypeOS2SubscriptYSize",
+                "openTypeOS2SubscriptXOffset",
+                "openTypeOS2SubscriptYOffset",
+                "openTypeOS2SuperscriptXSize",
+                "openTypeOS2SuperscriptYSize",
+                "openTypeOS2SuperscriptXOffset",
+                "openTypeOS2SuperscriptYOffset",
+                "openTypeOS2StrikeoutSize",
+                "openTypeOS2StrikeoutPosition",
+                "openTypeVheaVertTypoAscender",
+                "openTypeVheaVertTypoDescender",
+                "openTypeVheaVertTypoLineGap",
+                "openTypeVheaCaretSlopeRise",
+                "openTypeVheaCaretSlopeRun",
+                "openTypeVheaCaretOffset",
+                "postscriptSlantAngle",
+                "postscriptUnderlineThickness",
+                "postscriptUnderlinePosition",
+                "postscriptBlueValues",
+                "postscriptOtherBlues",
+                "postscriptFamilyBlues",
+                "postscriptFamilyOtherBlues",
+                "postscriptStemSnapH",
+                "postscriptStemSnapV",
+                "postscriptBlueFuzz",
+                "postscriptBlueShift",
+                "postscriptDefaultWidthX",
+                "postscriptNominalWidthX"
+            ]
+
+            for attr in values_to_scale:
                 value = getattr(f.info, attr)
                 if value == None or value == []:
                     continue
