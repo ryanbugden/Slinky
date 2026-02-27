@@ -317,13 +317,16 @@ class Slinky(ezui.WindowController):
                         # Scale images                
                         if scale_images == True:
                             g.image.scaleBy(factor, (0,0))
-                            if round_stuff:
-                                g.image.round()
                         
+                        # Scale glyph width
                         g.width *= factor
-
+                        
+                        # Round
                         if round_stuff:
-                            g.round()
+                            try:
+                                g.round()
+                            except NameError:
+                                print("Slinky error with rounding. Please update FontParts.")
                         
             # Finish up
             f.changed()
